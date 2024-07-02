@@ -1,0 +1,23 @@
+apiVersion: security.kubearmor.com/v11
+kind: KubeArmorPolicy
+metadata:
+   name: block-access-to-file
+   namespace: default
+spec:
+   selector:
+     matchLabels:
+       app: myapp
+   process:
+     matchPaths:
+     - path: /etc/shadow
+       action: Block
+   file:
+     matchPaths:
+     - path: /etc/shadow
+       action: Block
+   network:
+     matchProtocols:
+     - protocol: TCP
+       port: 80
+       action: Allow
+    action: Audit
