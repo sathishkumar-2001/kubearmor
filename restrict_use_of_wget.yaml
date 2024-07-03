@@ -1,0 +1,27 @@
+apiVersion: security.kubearmor.com/v1
+kind: KubeArmorPolicy
+metadata:
+  name: example-policy
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: my-app
+  file:
+    matchDirectories:
+    - dir: /etc
+      recursive: true
+      action: Block
+      processPath:
+      - path: /usr/bin/curl
+      - path: /usr/bin/wget
+  process:
+    matchPaths:
+    - path: /usr/bin/wget
+      action: Block
+  network:
+    matchProtocols:
+    - protocol: tcp
+      action: Allow
+    - protocol: udp
+      action: Block
